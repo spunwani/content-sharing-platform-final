@@ -53,7 +53,7 @@ A modern social media application built with React and FastAPI that allows users
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/spunwani/content-sharing-platform-final.git
    cd content-sharing-platform-final
    ```
 
