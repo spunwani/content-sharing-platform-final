@@ -32,6 +32,11 @@ export const api = {
     return response.json();
   },
 
+  isFollowingUser: async (userId, targetUserId) => {
+    const response = await fetch(`${API_BASE_URL}/users/${userId}/is-following/${targetUserId}`);
+    return response.json();
+  },
+
   // Image endpoints
   uploadImage: async (imageData) => {
     const formData = new FormData();

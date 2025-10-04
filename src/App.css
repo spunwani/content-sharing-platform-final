@@ -579,3 +579,32 @@ body {
   font-weight: 500;
   margin-left: 0.5rem;
 }
+
+/* Follow/Unfollow Button Styles */
+.follow-btn {
+  padding: 0.5rem 1rem;
+  background: #4ecdc4;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.follow-btn:hover {
+  background: #45b7b8;
+  transform: translateY(-1px);
+}
+
+.follow-btn.following {
+  background: #ff6b6b;
+}
+
+.follow-btn.following:hover {
+  background: #ff5252;
+}

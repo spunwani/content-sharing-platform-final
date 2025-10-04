@@ -192,20 +192,24 @@ async def get_all_users():
     return user_list
 
 @app.post("/users/{user_id}/follow/{target_user_id}")
-async def follow_user(user_id: str, target_user_id: str):
-    """Follow another user"""
+async def toggle_follow_user(user_id: str, target_user_id: str):
+    """Follow or unfollow another user"""
     if user_id not in users or target_user_id not in users:
         raise HTTPException(status_code=404, detail="User not found")
     
     if user_id == target_user_id:
         raise HTTPException(status_code=400, detail="Cannot follow yourself")
     
-    if user_id not in followers[target_user_id]:
+    if user_id in followers[target_user_id]:
+        # Unfollow: remove from followers list
+        followers[target_user_id].remove(user_id)
+        log_interaction(user_id, "unfollow", {"target_user_id": target_user_id})
+        return {"message": f"Successfully unfollowed user {target_user_id}", "action": "unfollowed"}
+    else:
+        # Follow: add to followers list
         followers[target_user_id].append(user_id)
         log_interaction(user_id, "follow", {"target_user_id": target_user_id})
-        return {"message": f"Successfully followed user {target_user_id}"}
-    else:
-        return {"message": "Already following this user"}
+        return {"message": f"Successfully followed user {target_user_id}", "action": "followed"}
 
 @app.post("/images/upload", response_model=ImageResponse)
 async def upload_image(
@@ -524,6 +528,15 @@ async def get_following_users(user_id: str):
             ))
     
     return following_users
+
+@app.get("/users/{user_id}/is-following/{target_user_id}")
+async def is_following_user(user_id: str, target_user_id: str):
+    """Check if a user is following another user"""
+    if user_id not in users or target_user_id not in users:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    is_following = user_id in followers[target_user_id]
+    return {"is_following": is_following}
 
 if __name__ == "__main__":
     import uvicorn
